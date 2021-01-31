@@ -1,8 +1,8 @@
 package com.example.demo.appuser;
 
-import lombok.AllArgsConstructor;
+import com.example.demo.registration.token.ConfirmationToken;
+import com.example.demo.registration.token.ConfirmationTokenService;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -10,6 +10,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Service
 @Data
@@ -18,6 +20,7 @@ public class AppUserService implements UserDetailsService {
     private final static String USER_NOT_FOUND_MESSAGE = "User with email {0} not found";
     private final AppUserRepository appUserRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final ConfirmationTokenService confirmationTokenService;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -38,10 +41,20 @@ public class AppUserService implements UserDetailsService {
 
         appUser.setPassword(encodedPassword);
 
+        // Saves user in Database
         appUserRepository.save(appUser);
 
-        //TODO: Send confirmation token
+        String token = UUID.randomUUID().toString();
+        ConfirmationToken confirmationToken = new ConfirmationToken(
+                token,
+                LocalDateTime.now(),
+                LocalDateTime.now().plusMinutes(15),
+                appUser
+        );
 
-        return "Token sent";
+        confirmationTokenService.saveConfirmationToken(confirmationToken);
+
+        // TODO send email
+        return token;
     }
 }
