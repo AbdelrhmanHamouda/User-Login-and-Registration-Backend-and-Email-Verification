@@ -1,6 +1,7 @@
 package com.example.demo.appuser;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,6 +12,7 @@ import java.util.Collections;
 
 // This implements UserDetails for security
 @Data
+@NoArgsConstructor
 @Entity
 public class AppUser implements UserDetails {
 
@@ -32,8 +34,9 @@ public class AppUser implements UserDetails {
     private String password;
     @Enumerated(EnumType.STRING)
     private AppUserRole appUserRole;
-    private Boolean locked;
-    private Boolean enabled;
+    private Boolean locked = false;
+    // User will be disabled till Email is confirmed
+    private Boolean enabled = false;
 
     // Constructor without "id" as it will be auto generated
     public AppUser(String firstName, String lastName, String email, String password, AppUserRole appUserRole) {
