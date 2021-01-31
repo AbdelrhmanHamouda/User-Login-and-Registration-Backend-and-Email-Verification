@@ -17,6 +17,7 @@ import java.util.Collections;
 public class AppUser implements UserDetails {
 
 
+    // Needed to get the app to create and iterate iver the id as needed.
     @SequenceGenerator(
             name = "app_user_sequence",
             sequenceName = "app_user_sequence",
