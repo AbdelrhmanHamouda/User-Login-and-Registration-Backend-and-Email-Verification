@@ -20,6 +20,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final AppUserService appUserService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    /*
+     * The idea here is to allow all traffic going to '/api/v1/registration/**',
+     * while blocking (asking to authenticate) when traffic is going to any other url.
+     */
 
     // Configure request security!
     @Override
