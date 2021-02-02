@@ -1,8 +1,9 @@
 package com.example.demo.registration.token;
 
 import com.example.demo.appuser.AppUser;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -10,8 +11,10 @@ import java.time.LocalDateTime;
 /**
  * To Manage confirmation token
  */
+@Getter
+@Setter
 @NoArgsConstructor
-@Data
+@Entity
 public class ConfirmationToken {
 
     // Needed to get the app to create and iterate iver the id as needed.
@@ -35,8 +38,7 @@ public class ConfirmationToken {
 
     @Column(nullable = false)
     private LocalDateTime expiresAt;
-
-    @Column(nullable = false)
+    
     private LocalDateTime confirmedAt;
 
     @ManyToOne
